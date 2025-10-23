@@ -1,5 +1,7 @@
 # CoinFantasy Hedera SDK
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 > **Open Source TypeScript/JavaScript SDK for Hedera Consensus Service (HCS) and Hedera Token Service (HTS)**
 
 A comprehensive, production-ready SDK for integrating CoinFantasy's Hedera blockchain services into your applications. Built with TypeScript, fully typed, and designed for modern JavaScript/TypeScript projects.
