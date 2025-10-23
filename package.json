@@ -1,6 +1,7 @@
 {
-  "name": "@coinfantasy/hedera-sdk",
-  "version": "1.0.0",
+  "name": "hedera-gateway",
+  "type": "module",
+  "version": "1.0.1",
   "description": "TypeScript/JavaScript SDK for CoinFantasy's Hedera blockchain integration",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -33,12 +34,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/coinfantasy365/hedera-sdk.git"
+    "url": "https://github.com/coinfantasy365/hedera-gateway.git"
   },
   "bugs": {
-    "url": "https://github.com/coinfantasy365/hedera-sdk/issues"
+    "url": "https://github.com/coinfantasy365/hedera-gateway/issues"
   },
-  "homepage": "https://github.com/coinfantasy365/hedera-sdk#readme",
+  "homepage": "https://github.com/coinfantasy365/hedera-gateway#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
