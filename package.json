@@ -56,7 +56,9 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "@hashgraph/hedera-wallet-connect": "^2.0.3",
     "@hashgraph/sdk": "^2.49.2",
+    "@walletconnect/universal-provider": "^2.22.2",
     "axios": "^1.6.2"
   },
   "peerDependencies": {
