@@ -98,9 +98,9 @@ jobs:
       run: npm ci
 
     - name: Run security audit
-      # Allow audit to fail for transitive dependency vulnerabilities
-      # See docs/SECURITY_AUDIT.md for risk assessment and mitigation
-      run: npm audit --audit-level high || true
+      # Audit for visibility only - transitive peer dependencies have known issues
+      # that cannot be fixed until upstream (walletconnect/hashconnect) releases patches
+      run: npm audit || echo "Security audit completed with known issues"
       continue-on-error: true
 
     - name: Run CodeQL analysis
