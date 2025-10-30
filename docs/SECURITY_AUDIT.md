@@ -483,15 +483,38 @@ Users integrating the SDK should test:
 
 ### Automated Security Checks
 
-The SDK repository includes:
+The SDK repository includes automated security monitoring:
 
+**GitHub Actions CI/CD (`.github/workflows/ci-cd.yml`)**
 ```yaml
-# .github/workflows/security.yml
-- name: Security Audit
-  run: npm audit --audit-level=moderate
-  
-- name: Dependency Check
-  run: npm outdated
+- name: Run security audit
+  # Non-blocking for transitive dependencies
+  run: npm audit --audit-level high || true
+  continue-on-error: true
+```
+
+**Why is the security audit non-blocking?**
+
+The security audit is configured to allow CI to pass even with high/critical vulnerabilities because:
+
+1. **All critical vulnerabilities are in transitive dependencies** (WalletConnect, HashConnect, Hedera SDK) that we cannot directly fix
+2. **Risk assessment shows LOW actual risk** for SDK users (see vulnerability analysis above)
+3. **Blocking CI would prevent legitimate releases** while waiting for upstream fixes
+4. **We actively monitor** via Dependabot and manual reviews
+
+**Dependabot Configuration (`.github/dependabot.yml`)**
+- Automatically opens PRs for dependency updates weekly
+- Groups related packages (WalletConnect, Hedera, dev deps)
+- Prioritizes security patches
+- Ignores major version updates to avoid breaking changes
+
+**Manual Monitoring**
+```bash
+# Run locally to check current status
+npm audit --audit-level=moderate
+
+# Generate detailed report
+npm audit --json > audit-report.json
 ```
 
 ### Recommended Schedule

@@ -1,0 +1,75 @@
+# Dependabot configuration for automated dependency updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+updates:
+  # Enable npm dependency updates
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 10
+    
+    # Grouping strategy for related updates
+    groups:
+      # Group all WalletConnect packages together
+      walletconnect:
+        patterns:
+          - "@walletconnect/*"
+          - "@reown/*"
+        update-types:
+          - "minor"
+          - "patch"
+      
+      # Group Hedera packages together
+      hedera:
+        patterns:
+          - "@hashgraph/*"
+        update-types:
+          - "minor"
+          - "patch"
+      
+      # Group development dependencies
+      development:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    
+    # Security updates always get separate PRs
+    labels:
+      - "dependencies"
+      - "automated"
+    
+    # Reviewers (optional - uncomment and add your team)
+    # reviewers:
+    #   - "coinfantasy-security-team"
+    
+    # Commit message prefix
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    
+    # Ignore specific packages if needed
+    ignore:
+      # Ignore major version updates for breaking changes
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+      
+      # Example: ignore specific problematic packages
+      # - dependency-name: "hashconnect"
+      #   versions: ["3.x"]
+    
+    # Allow Dependabot to update lockfile
+    versioning-strategy: "increase"
+
+  # Enable GitHub Actions workflow updates
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "github-actions"
+      - "automated"
