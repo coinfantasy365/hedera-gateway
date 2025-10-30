@@ -1,0 +1,343 @@
+﻿{
+    "auditReportVersion":  2,
+    "vulnerabilities":  {
+                            "@grpc/grpc-js":  {
+                                                  "name":  "@grpc/grpc-js",
+                                                  "severity":  "moderate",
+                                                  "isDirect":  false,
+                                                  "via":  [
+                                                              {
+                                                                  "source":  1097546,
+                                                                  "name":  "@grpc/grpc-js",
+                                                                  "dependency":  "@grpc/grpc-js",
+                                                                  "title":  "@grpc/grpc-js can allocate memory for incoming messages well above configured limits",
+                                                                  "url":  "https://github.com/advisories/GHSA-7v5v-9h63-cj86",
+                                                                  "severity":  "moderate",
+                                                                  "cwe":  [
+                                                                              "CWE-789"
+                                                                          ],
+                                                                  "cvss":  {
+                                                                               "score":  5.3,
+                                                                               "vectorString":  "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+                                                                           },
+                                                                  "range":  "\u003c1.8.22"
+                                                              }
+                                                          ],
+                                                  "effects":  [
+                                                                  "@hashgraph/sdk"
+                                                              ],
+                                                  "range":  "\u003c1.8.22",
+                                                  "nodes":  [
+                                                                "node_modules/hashconnect/node_modules/@grpc/grpc-js"
+                                                            ],
+                                                  "fixAvailable":  {
+                                                                       "name":  "hashconnect",
+                                                                       "version":  "0.2.9",
+                                                                       "isSemVerMajor":  true
+                                                                   }
+                                              },
+                            "@hashgraph/sdk":  {
+                                                   "name":  "@hashgraph/sdk",
+                                                   "severity":  "moderate",
+                                                   "isDirect":  true,
+                                                   "via":  [
+                                                               "@grpc/grpc-js",
+                                                               "pino"
+                                                           ],
+                                                   "effects":  [
+                                                                   "hashconnect"
+                                                               ],
+                                                   "range":  "2.26.0-beta.1 - 2.59.0-beta.1 || \u003e=2.73.1-beta.1",
+                                                   "nodes":  [
+                                                                 "node_modules/@hashgraph/sdk",
+                                                                 "node_modules/hashconnect/node_modules/@hashgraph/sdk"
+                                                             ],
+                                                   "fixAvailable":  true
+                                               },
+                            "@walletconnect/auth-client":  {
+                                                               "name":  "@walletconnect/auth-client",
+                                                               "severity":  "low",
+                                                               "isDirect":  false,
+                                                               "via":  [
+                                                                           "@walletconnect/logger"
+                                                                       ],
+                                                               "effects":  [
+
+                                                                           ],
+                                                               "range":  "*",
+                                                               "nodes":  [
+                                                                             "node_modules/@walletconnect/auth-client"
+                                                                         ],
+                                                               "fixAvailable":  true
+                                                           },
+                            "@walletconnect/core":  {
+                                                        "name":  "@walletconnect/core",
+                                                        "severity":  "critical",
+                                                        "isDirect":  false,
+                                                        "via":  [
+                                                                    "@walletconnect/logger",
+                                                                    "@walletconnect/types",
+                                                                    "@walletconnect/utils",
+                                                                    "@walletconnect/utils"
+                                                                ],
+                                                        "effects":  [
+
+                                                                    ],
+                                                        "range":  "2.0.0-2.0.0-beta.102 - 2.22.2",
+                                                        "nodes":  [
+                                                                      "node_modules/@walletconnect/web3wallet/node_modules/@walletconnect/core",
+                                                                      "node_modules/hashconnect/node_modules/@walletconnect/core"
+                                                                  ],
+                                                        "fixAvailable":  true
+                                                    },
+                            "@walletconnect/logger":  {
+                                                          "name":  "@walletconnect/logger",
+                                                          "severity":  "low",
+                                                          "isDirect":  false,
+                                                          "via":  [
+                                                                      "pino"
+                                                                  ],
+                                                          "effects":  [
+                                                                          "@walletconnect/auth-client",
+                                                                          "@walletconnect/core",
+                                                                          "@walletconnect/sign-client",
+                                                                          "@walletconnect/types",
+                                                                          "@walletconnect/web3wallet"
+                                                                      ],
+                                                          "range":  "\u003c=2.1.3",
+                                                          "nodes":  [
+                                                                        "node_modules/@walletconnect/logger"
+                                                                    ],
+                                                          "fixAvailable":  true
+                                                      },
+                            "@walletconnect/sign-client":  {
+                                                               "name":  "@walletconnect/sign-client",
+                                                               "severity":  "critical",
+                                                               "isDirect":  false,
+                                                               "via":  [
+                                                                           "@walletconnect/core",
+                                                                           "@walletconnect/core",
+                                                                           "@walletconnect/logger",
+                                                                           "@walletconnect/types",
+                                                                           "@walletconnect/utils",
+                                                                           "@walletconnect/utils"
+                                                                       ],
+                                                               "effects":  [
+
+                                                                           ],
+                                                               "range":  "\u003c=2.22.2",
+                                                               "nodes":  [
+                                                                             "node_modules/@walletconnect/web3wallet/node_modules/@walletconnect/sign-client",
+                                                                             "node_modules/hashconnect/node_modules/@walletconnect/sign-client"
+                                                                         ],
+                                                               "fixAvailable":  true
+                                                           },
+                            "@walletconnect/types":  {
+                                                         "name":  "@walletconnect/types",
+                                                         "severity":  "low",
+                                                         "isDirect":  false,
+                                                         "via":  [
+                                                                     "@walletconnect/logger"
+                                                                 ],
+                                                         "effects":  [
+                                                                         "@walletconnect/core",
+                                                                         "@walletconnect/sign-client",
+                                                                         "@walletconnect/utils",
+                                                                         "@walletconnect/web3wallet"
+                                                                     ],
+                                                         "range":  "2.1.2-eaa4818c - 2.22.2",
+                                                         "nodes":  [
+                                                                       "node_modules/@walletconnect/web3wallet/node_modules/@walletconnect/types",
+                                                                       "node_modules/hashconnect/node_modules/@walletconnect/types"
+                                                                   ],
+                                                         "fixAvailable":  true
+                                                     },
+                            "@walletconnect/utils":  {
+                                                         "name":  "@walletconnect/utils",
+                                                         "severity":  "critical",
+                                                         "isDirect":  false,
+                                                         "via":  [
+                                                                     "@walletconnect/types",
+                                                                     "elliptic"
+                                                                 ],
+                                                         "effects":  [
+                                                                         "@walletconnect/core",
+                                                                         "@walletconnect/sign-client",
+                                                                         "@walletconnect/web3wallet"
+                                                                     ],
+                                                         "range":  "2.1.2-eaa4818c - 2.22.2",
+                                                         "nodes":  [
+                                                                       "node_modules/@walletconnect/web3wallet/node_modules/@walletconnect/utils",
+                                                                       "node_modules/hashconnect/node_modules/@walletconnect/utils"
+                                                                   ],
+                                                         "fixAvailable":  true
+                                                     },
+                            "@walletconnect/web3wallet":  {
+                                                              "name":  "@walletconnect/web3wallet",
+                                                              "severity":  "critical",
+                                                              "isDirect":  false,
+                                                              "via":  [
+                                                                          "@walletconnect/auth-client",
+                                                                          "@walletconnect/core",
+                                                                          "@walletconnect/logger",
+                                                                          "@walletconnect/sign-client",
+                                                                          "@walletconnect/types",
+                                                                          "@walletconnect/utils"
+                                                                      ],
+                                                              "effects":  [
+
+                                                                          ],
+                                                              "range":  "*",
+                                                              "nodes":  [
+                                                                            "node_modules/@walletconnect/web3wallet"
+                                                                        ],
+                                                              "fixAvailable":  true
+                                                          },
+                            "elliptic":  {
+                                             "name":  "elliptic",
+                                             "severity":  "critical",
+                                             "isDirect":  false,
+                                             "via":  [
+                                                         {
+                                                             "source":  1102901,
+                                                             "name":  "elliptic",
+                                                             "dependency":  "elliptic",
+                                                             "title":  "Elliptic\u0027s private key extraction in ECDSA upon signing a malformed input (e.g. a string)",
+                                                             "url":  "https://github.com/advisories/GHSA-vjh7-7g9h-fjfh",
+                                                             "severity":  "critical",
+                                                             "cwe":  [
+                                                                         "CWE-200"
+                                                                     ],
+                                                             "cvss":  {
+                                                                          "score":  0,
+                                                                          "vectorString":  null
+                                                                      },
+                                                             "range":  "\u003c=6.6.0"
+                                                         },
+                                                         {
+                                                             "source":  1105750,
+                                                             "name":  "elliptic",
+                                                             "dependency":  "elliptic",
+                                                             "title":  "Valid ECDSA signatures erroneously rejected in Elliptic",
+                                                             "url":  "https://github.com/advisories/GHSA-fc9h-whq2-v747",
+                                                             "severity":  "low",
+                                                             "cwe":  [
+                                                                         "CWE-347"
+                                                                     ],
+                                                             "cvss":  {
+                                                                          "score":  4.8,
+                                                                          "vectorString":  "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:L"
+                                                                      },
+                                                             "range":  "\u003c6.6.0"
+                                                         }
+                                                     ],
+                                             "effects":  [
+                                                             "@walletconnect/utils"
+                                                         ],
+                                             "range":  "\u003c=6.6.0",
+                                             "nodes":  [
+                                                           "node_modules/@walletconnect/web3wallet/node_modules/elliptic"
+                                                       ],
+                                             "fixAvailable":  true
+                                         },
+                            "fast-redact":  {
+                                                "name":  "fast-redact",
+                                                "severity":  "low",
+                                                "isDirect":  false,
+                                                "via":  [
+                                                            {
+                                                                "source":  1108265,
+                                                                "name":  "fast-redact",
+                                                                "dependency":  "fast-redact",
+                                                                "title":  "fast-redact vulnerable to prototype pollution",
+                                                                "url":  "https://github.com/advisories/GHSA-ffrw-9mx8-89p8",
+                                                                "severity":  "low",
+                                                                "cwe":  [
+                                                                            "CWE-1321"
+                                                                        ],
+                                                                "cvss":  {
+                                                                             "score":  0,
+                                                                             "vectorString":  null
+                                                                         },
+                                                                "range":  "\u003c=3.5.0"
+                                                            }
+                                                        ],
+                                                "effects":  [
+                                                                "pino"
+                                                            ],
+                                                "range":  "*",
+                                                "nodes":  [
+                                                              "node_modules/fast-redact"
+                                                          ],
+                                                "fixAvailable":  {
+                                                                     "name":  "hashconnect",
+                                                                     "version":  "0.2.9",
+                                                                     "isSemVerMajor":  true
+                                                                 }
+                                            },
+                            "hashconnect":  {
+                                                "name":  "hashconnect",
+                                                "severity":  "moderate",
+                                                "isDirect":  true,
+                                                "via":  [
+                                                            "@hashgraph/sdk",
+                                                            "@walletconnect/auth-client",
+                                                            "@walletconnect/sign-client",
+                                                            "@walletconnect/types"
+                                                        ],
+                                                "effects":  [
+
+                                                            ],
+                                                "range":  "\u003e=3.0.0-beta.20",
+                                                "nodes":  [
+                                                              "node_modules/hashconnect"
+                                                          ],
+                                                "fixAvailable":  {
+                                                                     "name":  "hashconnect",
+                                                                     "version":  "0.2.9",
+                                                                     "isSemVerMajor":  true
+                                                                 }
+                                            },
+                            "pino":  {
+                                         "name":  "pino",
+                                         "severity":  "low",
+                                         "isDirect":  false,
+                                         "via":  [
+                                                     "fast-redact"
+                                                 ],
+                                         "effects":  [
+                                                         "@hashgraph/sdk",
+                                                         "@walletconnect/logger"
+                                                     ],
+                                         "range":  "5.0.0-rc.1 - 9.11.0",
+                                         "nodes":  [
+                                                       "node_modules/@walletconnect/logger/node_modules/pino",
+                                                       "node_modules/hashconnect/node_modules/pino",
+                                                       "node_modules/pino"
+                                                   ],
+                                         "fixAvailable":  {
+                                                              "name":  "hashconnect",
+                                                              "version":  "0.2.9",
+                                                              "isSemVerMajor":  true
+                                                          }
+                                     }
+                        },
+    "metadata":  {
+                     "vulnerabilities":  {
+                                             "info":  0,
+                                             "low":  5,
+                                             "moderate":  3,
+                                             "high":  0,
+                                             "critical":  5,
+                                             "total":  13
+                                         },
+                     "dependencies":  {
+                                          "prod":  419,
+                                          "dev":  400,
+                                          "optional":  27,
+                                          "peer":  411,
+                                          "peerOptional":  0,
+                                          "total":  1230
+                                      }
+                 }
+}

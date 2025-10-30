@@ -8,6 +8,7 @@ import {
   NFTMintResult,
   TokenAssociationInfo
 } from './types.js';
+import { validateAmount, isValidAccountId, isValidTokenId, getEnvVar } from './security.js';
 
 export class HTSManager {
   constructor(private client: APIClient) {}
@@ -16,16 +17,22 @@ export class HTSManager {
    * Get information about a token
    */
   async getTokenInfo(tokenId: string): Promise<HTSTokenInfo> {
-  const response = await this.client.get<{ token: HTSTokenInfo }>(`/hedera/tokens/${tokenId}`);
-  return response.token;
+    if (!isValidTokenId(tokenId)) {
+      throw new Error(`Invalid token ID format: ${tokenId}`);
+    }
+    const response = await this.client.get<{ token: HTSTokenInfo }>(`/hedera/tokens/${tokenId}`);
+    return response.token;
   }
 
   /**
    * Distribute reward tokens to a user
    */
   async distributeRewards(distribution: HTSRewardDistribution): Promise<HTSDistributionResult> {
-  const response = await this.client.post<{ operationId: string; transactionId?: string }>('/hedera/gateway/hts/mint', {
-      tokenId: process.env.REWARD_TOKEN_ID,
+    // Validate amount
+    validateAmount(distribution.amount);
+
+    const response = await this.client.post<{ operationId: string; transactionId?: string }>('/hedera/gateway/hts/mint', {
+      tokenId: getEnvVar('REWARD_TOKEN_ID'),
       amount: distribution.amount,
       recipientId: distribution.recipientId,
       metadata: {
@@ -38,7 +45,7 @@ export class HTSManager {
     return {
       operationId: response.operationId,
       transactionId: response.transactionId,
-      tokenId: process.env.REWARD_TOKEN_ID || '',
+      tokenId: getEnvVar('REWARD_TOKEN_ID') || '',
       amount: distribution.amount
     };
   }
@@ -47,7 +54,14 @@ export class HTSManager {
    * Associate a token with a user's account
    */
   async associateToken(accountId: string, tokenId: string): Promise<{ operationId: string }> {
-  const response = await this.client.post<{ operationId: string }>('/hedera/gateway/hts/associate', {
+    if (!isValidAccountId(accountId)) {
+      throw new Error(`Invalid account ID format: ${accountId}`);
+    }
+    if (!isValidTokenId(tokenId)) {
+      throw new Error(`Invalid token ID format: ${tokenId}`);
+    }
+
+    const response = await this.client.post<{ operationId: string }>('/hedera/gateway/hts/associate', {
       accountId,
       tokenId
     });
@@ -61,7 +75,14 @@ export class HTSManager {
    * Check if a token is associated with an account
    */
   async checkTokenAssociation(accountId: string, tokenId: string): Promise<TokenAssociationInfo> {
-  const response = await this.client.get<{ isAssociated: boolean }>(`/hedera/accounts/${accountId}/tokens/${tokenId}/association`);
+    if (!isValidAccountId(accountId)) {
+      throw new Error(`Invalid account ID format: ${accountId}`);
+    }
+    if (!isValidTokenId(tokenId)) {
+      throw new Error(`Invalid token ID format: ${tokenId}`);
+    }
+
+    const response = await this.client.get<{ isAssociated: boolean }>(`/hedera/accounts/${accountId}/tokens/${tokenId}/association`);
     
     return {
       tokenId,

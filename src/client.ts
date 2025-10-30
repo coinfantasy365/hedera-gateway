@@ -26,7 +26,10 @@ export class APIClient {
     // Add request interceptor for logging
     this.client.interceptors.request.use(
       (config) => {
-        console.log(`[CoinFantasy SDK] ${config.method?.toUpperCase()} ${config.url}`);
+        // Only log in development mode to prevent sensitive data leaks
+        if (process.env.NODE_ENV === 'development' || process.env.SDK_DEBUG === 'true') {
+          console.log(`[CoinFantasy SDK] ${config.method?.toUpperCase()} ${config.url}`);
+        }
         return config;
       },
       (error) => Promise.reject(error)
@@ -72,7 +75,10 @@ export class APIClient {
       this.retryOptions.maxDelay ?? 30000
     );
 
-    console.log(`[CoinFantasy SDK] Retrying request in ${delay}ms (attempt ${config.__retryCount})`);
+    // Only log retries in development mode
+    if (process.env.NODE_ENV === 'development' || process.env.SDK_DEBUG === 'true') {
+      console.log(`[CoinFantasy SDK] Retrying request in ${delay}ms (attempt ${config.__retryCount})`);
+    }
 
     await new Promise(resolve => setTimeout(resolve, delay));
     return this.client(config as AxiosRequestConfig);

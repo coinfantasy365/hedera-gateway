@@ -7,6 +7,7 @@ import {
   MatchEventData,
   DraftEventData
 } from './types.js';
+import { sanitizeEventData, getEnvVar } from './security.js';
 
 export class HCSManager {
   constructor(private client: APIClient) {}
@@ -15,13 +16,17 @@ export class HCSManager {
    * Publish a generic event to HCS
    */
   async publishEvent(eventData: HCSEventData): Promise<HCSPublishResult> {
-  const response = await this.client.post<{ operationId: string; transactionId?: string; consensusTimestamp?: string; sequenceNumber?: number }>('/hedera/gateway/hcs/publish', {
-      topicId: process.env.HCS_TOPIC_ID,
-      message: `${eventData.eventType}: ${JSON.stringify(eventData.data)}`,
+    // Sanitize event data to prevent injection attacks
+    const sanitizedData = sanitizeEventData(eventData.data);
+    const sanitizedMetadata = eventData.metadata ? sanitizeEventData(eventData.metadata) : undefined;
+
+    const response = await this.client.post<{ operationId: string; transactionId?: string; consensusTimestamp?: string; sequenceNumber?: number }>('/hedera/gateway/hcs/publish', {
+      topicId: getEnvVar('HCS_TOPIC_ID'),
+      message: `${eventData.eventType}: ${JSON.stringify(sanitizedData)}`,
       eventType: eventData.eventType,
       metadata: {
-        ...eventData.data,
-        ...eventData.metadata,
+        ...sanitizedData,
+        ...sanitizedMetadata,
         timestamp: new Date().toISOString()
       }
     });

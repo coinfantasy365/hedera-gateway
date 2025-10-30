@@ -22,4 +22,6 @@ node_modules.old_*/
 private-keys/
 secrets/
 /.env.*
+# Ignore AI assistant guidance files that may contain workspace-specific notes
+.github/copilot-instructions.md
 !.gitkeep

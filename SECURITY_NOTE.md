@@ -204,10 +204,11 @@ await Promise.all(operations);
 
 ## Audit History
 
-| Date | Auditor | Scope | Result |
-|------|---------|-------|--------|
-| 2025-10-10 | Internal | Dependency audit | 23 → 5 vulnerabilities after HashConnect removal |
-| TBD | External | Full SDK audit | Planned for v1.1 |
+| Date | Auditor | Scope | Result | Report |
+|------|---------|-------|--------|--------|
+| 2025-10-30 | Internal | Full security audit | 78/100 | [SECURITY_AUDIT.md](docs/SECURITY_AUDIT.md) |
+| 2025-10-10 | Internal | Dependency audit | 23 → 13 vulnerabilities | [SECURITY_NOTE.md](SECURITY_NOTE.md) |
+| TBD | External | Third-party audit | Planned for v2.0 | TBD |
 
 ## Compliance
 
@@ -224,4 +225,5 @@ await Promise.all(operations);
 
 ## Changelog
 
+- **2025-10-30:** Security hardening release - input validation, secure logging, rate limiting
 - **2025-10-10:** Initial security note created; documented HashConnect removal and current advisory status

@@ -111,6 +111,7 @@ export * from './types.js';
 export { HCSManager } from './hcs.js';
 export { HTSManager } from './hts.js';
 export { WalletManager } from './wallet.js';
+export * from './security.js';
 
 // Default export
 export default CoinFantasyHederaSDK;
