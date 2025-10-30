@@ -8,6 +8,14 @@ import type { WalletConnectionInfo } from '../types.js';
  *
  * TODO: implement proper session handling, pairing, and request/response mapping.
  */
+
+interface UniversalProvider {
+  connect: (config: Record<string, unknown>) => Promise<Record<string, unknown>>;
+  disconnect: () => Promise<void>;
+  request: (req: { method: string; params: unknown[] }) => Promise<unknown>;
+  init: (config: { projectId: string }) => Promise<UniversalProvider>;
+}
+
 export interface WalletConnectOptions {
   projectId: string;
   name?: string;
@@ -24,8 +32,8 @@ export interface WalletConnectOptions {
  * should be implemented and tested against a real wallet.
  */
 export class WalletConnectAdapter implements WalletAdapter {
-  private provider: any | null = null;
-  private connector: any | null = null;
+  private provider: UniversalProvider | null = null;
+  private connector: Record<string, unknown> | null = null;
   private opts: WalletConnectOptions;
 
   constructor(opts: WalletConnectOptions) {
@@ -46,7 +54,7 @@ export class WalletConnectAdapter implements WalletAdapter {
       const upkg = await import('@walletconnect/universal-provider');
       const HederaWc = await import('@hashgraph/hedera-wallet-connect');
 
-      const UniversalProviderCtor: any = (upkg && (upkg.default || upkg)) as any;
+      const UniversalProviderCtor = (upkg && ((upkg.default as unknown) || upkg)) as { init: (config: { projectId: string }) => Promise<UniversalProvider> };
       if (!UniversalProviderCtor || typeof UniversalProviderCtor.init !== 'function') {
         throw new Error('UniversalProvider not found or invalid');
       }
@@ -56,10 +64,10 @@ export class WalletConnectAdapter implements WalletAdapter {
 
       // Hedera connector may export a default class/factory or named exports.
       try {
-        const HederaExport: any = HederaWc && (HederaWc.default || HederaWc);
+        const HederaExport = HederaWc && ((HederaWc.default as unknown) || HederaWc) as Record<string, unknown>;
         const HederaCtor = HederaExport && (HederaExport.HederaWalletConnect || HederaExport);
         if (typeof HederaCtor === 'function') {
-          this.connector = new HederaCtor({ provider: this.provider, metadata: {
+          this.connector = new (HederaCtor as new (config: Record<string, unknown>) => Record<string, unknown>)({ provider: this.provider, metadata: {
             name: this.opts.name || 'CoinFantasy',
             description: this.opts.description || 'CoinFantasy DApp',
             url: this.opts.url || 'https://coinfantasy.io',
@@ -68,10 +76,10 @@ export class WalletConnectAdapter implements WalletAdapter {
         } else {
           this.connector = null;
         }
-      } catch (err) {
+      } catch {
         this.connector = null;
       }
-    } catch (err) {
+    } catch {
       // keep provider null if imports or initialization failed
       this.provider = null;
       this.connector = null;
@@ -100,8 +108,11 @@ export class WalletConnectAdapter implements WalletAdapter {
     });
 
     // session.namespaces.hedera.accounts is an array like ['hedera:testnet:0.0.123']
-    const hederaNs = session?.namespaces?.hedera;
-    const accountStr = Array.isArray(hederaNs?.accounts) && hederaNs.accounts.length ? hederaNs.accounts[0] : null;
+    const sessionRecord = session as Record<string, unknown>;
+    const namespaces = sessionRecord.namespaces as Record<string, unknown> | undefined;
+    const hederaNs = namespaces?.hedera as Record<string, unknown> | undefined;
+    const accounts = hederaNs?.accounts as string[] | undefined;
+    const accountStr = Array.isArray(accounts) && accounts.length ? accounts[0] : null;
 
     if (!accountStr) throw new Error('No Hedera account returned from WalletConnect session');
 
@@ -120,7 +131,7 @@ export class WalletConnectAdapter implements WalletAdapter {
       if (typeof window !== 'undefined') {
         localStorage.setItem('hedera_wallet_connection', JSON.stringify(info));
       }
-    } catch (err) {
+    } catch {
       // ignore storage errors
     }
 
@@ -132,7 +143,7 @@ export class WalletConnectAdapter implements WalletAdapter {
       if (this.provider && typeof this.provider.disconnect === 'function') {
         await this.provider.disconnect();
       }
-    } catch (err) {
+    } catch {
       // swallow
     }
 
@@ -140,7 +151,9 @@ export class WalletConnectAdapter implements WalletAdapter {
     this.connector = null;
     try {
       if (typeof window !== 'undefined') localStorage.removeItem('hedera_wallet_connection');
-    } catch (err) {}
+    } catch {
+      // ignore
+    }
   }
 
   async requestTransaction(transaction: Uint8Array): Promise<Uint8Array> {
@@ -169,7 +182,7 @@ export class WalletConnectAdapter implements WalletAdapter {
         const res = await this.provider.request({ method: 'hedera_getAccounts', params: [] });
         if (Array.isArray(res)) return res as string[];
       }
-    } catch (err) {
+    } catch {
       // ignore
     }
     return [];

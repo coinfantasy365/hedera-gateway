@@ -74,8 +74,8 @@ export class WalletManager {
   isHashPackAvailable(): boolean {
     try {
       // attempt to detect hashpack global first
-      if (typeof window !== 'undefined' && (window as any).hashpack) return true;
-    } catch (err) {
+      if (typeof window !== 'undefined' && (window as unknown as Record<string, unknown>).hashpack) return true;
+    } catch {
       // ignore
     }
     // Fall back to adapter availability

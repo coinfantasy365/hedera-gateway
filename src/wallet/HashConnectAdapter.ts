@@ -1,57 +1,59 @@
 import type { WalletAdapter } from './WalletAdapter.js';
 import type { WalletConnectionInfo } from '../types.js';
 
+interface HashPackConnectResult {
+  accountIds: string[];
+  network?: string;
+  publicKey?: string;
+}
+
 declare global {
   interface Window {
-    hashpack?: {
-      connectToLocalWallet: () => Promise<{ accountIds: string[]; network?: string; publicKey?: string }>;
-      disconnect?: () => void;
-      requestTransaction?: (transaction: Uint8Array) => Promise<Uint8Array>;
-    };
+    hashpack?: Record<string, unknown>;
   }
 }
 
 export class HashConnectAdapter implements WalletAdapter {
   isAvailable(): boolean {
     try {
-      return typeof window !== 'undefined' && !!(window as any).hashpack;
-    } catch (err) {
+      return typeof window !== 'undefined' && !!(window as unknown as Record<string, unknown>).hashpack;
+    } catch {
       return false;
     }
   }
 
   // Poll for up to timeoutMs milliseconds for window.hashpack to appear
-  async waitForHashPack(timeoutMs = 10000): Promise<any | null> {
+  async waitForHashPack(timeoutMs = 10000): Promise<unknown | null> {
     if (typeof window === 'undefined') return null;
     const start = Date.now();
     while (Date.now() - start < timeoutMs) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const hp = (window as any).hashpack;
+      const hp = (window as unknown as Record<string, unknown>).hashpack;
       if (hp) return hp;
-      // eslint-disable-next-line no-await-in-loop
+       
       await new Promise(res => setTimeout(res, 250));
     }
     return null;
   }
 
   // Probe common candidate connect methods on the hashpack object without invoking them
-  probeConnectMethod(hp: any): string | null {
+  probeConnectMethod(hp: unknown): string | null {
     if (!hp) return null;
     const candidates = ['connectToLocalWallet', 'connect', 'connectWallet', 'connectToWallet'];
     for (const name of candidates) {
-      if (typeof hp[name] === 'function') return name;
+      if (typeof (hp as Record<string, unknown>)[name] === 'function') return name;
     }
     // also check non-enumerable and symbol keys
     try {
       const keys = Reflect.ownKeys(hp || {});
       for (const k of keys) {
         try {
-          if (typeof (hp as any)[k] === 'function') return String(k);
-        } catch (e) {
+          const key = typeof k === 'symbol' ? k.toString() : k;
+          if (typeof (hp as Record<string | symbol, unknown>)[k] === 'function') return key;
+        } catch {
           // ignore
         }
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
     return null;
@@ -68,23 +70,24 @@ export class HashConnectAdapter implements WalletAdapter {
     if (!hp) throw new Error('HashPack wallet not available (no injection detected)');
 
     const method = this.probeConnectMethod(hp);
-    if (!method || typeof hp[method] !== 'function') {
+    const hpRecord = hp as Record<string, unknown>;
+    if (!method || typeof hpRecord[method] !== 'function') {
       throw new Error('HashPack connect API not available on window.hashpack');
     }
 
     // call the discovered method
-    const result = await hp[method]();
+    const result = await (hpRecord[method] as () => Promise<HashPackConnectResult>)();
 
     // Dev-only: surface the raw connect result to help debugging network reporting
     try {
-      // eslint-disable-next-line no-console
+       
       if (process && process.env && process.env.NODE_ENV === 'development') {
-        // eslint-disable-next-line no-console
+         
         console.log('HashConnectAdapter: raw connect result', result);
-        // eslint-disable-next-line no-console
+         
         console.log('HashConnectAdapter: reported network', result && result.network);
       }
-    } catch (e) {
+    } catch {
       // ignore logging errors in non-node-like environments
     }
 
@@ -108,11 +111,11 @@ export class HashConnectAdapter implements WalletAdapter {
 
   async disconnect(): Promise<void> {
     try {
-      const hp = (typeof window !== 'undefined') ? (window as any).hashpack : null;
+      const hp = (typeof window !== 'undefined') ? (window as unknown as Record<string, unknown>).hashpack as Record<string, unknown> : null;
       if (hp && typeof hp.disconnect === 'function') {
-        hp.disconnect();
+        (hp.disconnect as () => void)();
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
     if (typeof window !== 'undefined') {
@@ -121,11 +124,16 @@ export class HashConnectAdapter implements WalletAdapter {
   }
 
   async requestTransaction(transaction: Uint8Array): Promise<Uint8Array> {
-    if (!this.isAvailable() || !window.hashpack?.requestTransaction) {
-      throw new Error('HashPack transaction request API not available');
+    if (!this.isAvailable() || !window.hashpack) {
+      throw new Error('HashPack wallet not available');
     }
-
-    return await window.hashpack.requestTransaction(transaction);
+    const requestTransaction = (window.hashpack as Record<string, unknown>).requestTransaction as
+      | ((transaction: Uint8Array) => Promise<Uint8Array>)
+      | undefined;
+    if (!requestTransaction) {
+      throw new Error('HashPack requestTransaction not available');
+    }
+    return await requestTransaction(transaction);
   }
 
   async getAccounts(): Promise<string[]> {
@@ -133,11 +141,12 @@ export class HashConnectAdapter implements WalletAdapter {
     const hp = await this.waitForHashPack(3000);
     if (!hp) return [];
     const method = this.probeConnectMethod(hp);
-    if (!method || typeof hp[method] !== 'function') return [];
+    const hpRecord = hp as Record<string, unknown>;
+    if (!method || typeof hpRecord[method] !== 'function') return [];
     try {
-      const result = await hp[method]();
+      const result = await (hpRecord[method] as () => Promise<HashPackConnectResult>)();
       return result?.accountIds || [];
-    } catch (err) {
+    } catch {
       return [];
     }
   }
