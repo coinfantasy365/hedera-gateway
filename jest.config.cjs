@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   preset: 'ts-jest',
   // Use jsdom so tests that reference `window` (wallet/browser mocks) work in the test environment
   testEnvironment: 'jsdom',
@@ -31,4 +31,3 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testTimeout: 10000
 };
- 
