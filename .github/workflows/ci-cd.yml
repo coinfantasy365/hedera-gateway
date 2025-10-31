@@ -138,7 +138,20 @@ jobs:
     - name: Build package
       run: npm run build
 
+    - name: Check if version already published
+      id: check_published
+      run: |
+        VERSION=$(node -p "require('./package.json').version")
+        PKG_NAME=$(node -p "require('./package.json').name")
+        echo "Checking npm for $PKG_NAME@$VERSION"
+        if npm view "${PKG_NAME}@${VERSION}" >/dev/null 2>&1; then
+          echo "published=true" >> $GITHUB_OUTPUT
+        else
+          echo "published=false" >> $GITHUB_OUTPUT
+        fi
+
     - name: Publish to NPM
+      if: steps.check_published.outputs.published == 'false'
       run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -164,6 +177,7 @@ jobs:
     
     steps:
     - name: Discord notification
+      if: ${{ secrets.DISCORD_WEBHOOK != '' }}
       uses: Ilshidur/action-discord@master
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
