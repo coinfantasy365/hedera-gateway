@@ -60,7 +60,7 @@
     "@hashgraph/hedera-wallet-connect": "^2.0.3",
     "@hashgraph/sdk": "^2.49.2",
     "@walletconnect/universal-provider": "^2.22.2",
-    "axios": "^1.6.2"
+    "axios": "^1.13.2"
   },
   "peerDependencies": {
     "hashconnect": "^3.0.14"
