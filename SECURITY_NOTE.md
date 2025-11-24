@@ -139,7 +139,7 @@ npm install --package-lock-only
 If you discover a security vulnerability in this SDK:
 
 1. **DO NOT** open a public GitHub issue
-2. Email security@coinfantasy.io with:
+2. Email security@coinfantasy.fun with:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact
@@ -167,7 +167,7 @@ Always specify the network explicitly to prevent mainnet/testnet confusion:
 ```typescript
 const sdk = new CoinFantasySDK({
   network: 'testnet',  // or 'mainnet'
-  apiBaseUrl: 'https://api.coinfantasy.io'
+  apiBaseUrl: 'https://api.coinfantasy.fun'
 });
 ```
 

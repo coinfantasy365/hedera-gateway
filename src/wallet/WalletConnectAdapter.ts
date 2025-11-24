@@ -70,7 +70,7 @@ export class WalletConnectAdapter implements WalletAdapter {
           this.connector = new (HederaCtor as new (config: Record<string, unknown>) => Record<string, unknown>)({ provider: this.provider, metadata: {
             name: this.opts.name || 'CoinFantasy',
             description: this.opts.description || 'CoinFantasy DApp',
-            url: this.opts.url || 'https://coinfantasy.io',
+            url: this.opts.url || 'https://coinfantasy.fun',
             icons: this.opts.icons || []
           }});
         } else {

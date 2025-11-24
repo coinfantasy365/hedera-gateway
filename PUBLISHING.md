@@ -256,7 +256,7 @@ node -e "const sdk = require('@coinfantasy/hedera-sdk'); console.log(sdk)"
 
 ### 2. Update Documentation Sites
 
-- Update [docs.coinfantasy.io](https://docs.coinfantasy.io) with new version
+- Update [docs.coinfantasy.fun](https://docs.coinfantasy.fun) with new version
 - Announce on:
   - GitHub Discussions
   - Twitter/X
@@ -404,7 +404,7 @@ Ensure `LICENSE` file is included in published package.
 
 - **GitHub Issues:** https://github.com/coinfantasy365/hedera-sdk/issues
 - **Discussions:** https://github.com/coinfantasy365/hedera-sdk/discussions
-- **Security:** security@coinfantasy.io
+- **Security:** contact@coinfantasy.fun
 - **npm Package:** https://www.npmjs.com/package/@coinfantasy/hedera-sdk
 
 ## Metrics & Analytics

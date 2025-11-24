@@ -45,7 +45,7 @@ import { CoinFantasyHederaSDK } from '@coinfantasy/hedera-sdk';
 
 const sdk = new CoinFantasyHederaSDK({
   network: 'testnet',  // or 'mainnet'
-  apiBaseUrl: 'https://api.coinfantasy.io',
+  apiBaseUrl: 'https://api.coinfantasy.fun',
   apiKey: 'your-api-key'  // optional
 });
 ```
@@ -239,8 +239,8 @@ const adapter = createAdapterForChoice('walletconnect', {
   projectId: process.env.WALLETCONNECT_PROJECT_ID!,
   name: 'CoinFantasy',
   description: 'Fantasy sports powered by Hedera',
-  url: 'https://coinfantasy.io',
-  icons: ['https://coinfantasy.io/icon.png']
+  url: 'https://coinfantasy.fun',
+  icons: ['https://coinfantasy.fun/icon.png']
 });
 
 const wallet = new WalletManager(adapter);
@@ -343,7 +343,7 @@ Create a `.env` file:
 VITE_WALLETCONNECT_PROJECT_ID=af1efc302e1c80d067010fd7c05919de
 
 # API Configuration
-VITE_COINFANTASY_API_URL=https://api.coinfantasy.io
+VITE_COINFANTASY_API_URL=https://api.coinfantasy.fun
 VITE_HEDERA_NETWORK=testnet  # or 'mainnet'
 ```
 
@@ -373,7 +373,7 @@ HEDERA_OPERATOR_KEY=302e020100300506032b65700422042...
 HCS_TOPIC_ID=0.0.789012
 
 # API Configuration
-COINFANTASY_API_URL=https://api.coinfantasy.io
+COINFANTASY_API_URL=https://api.coinfantasy.fun
 COINFANTASY_API_KEY=your-api-key
 
 # WalletConnect (if using server-side WalletConnect)
@@ -541,9 +541,9 @@ Please be respectful and professional. We follow the [Contributor Covenant Code 
 
 - 🐛 **Report Bugs:** [GitHub Issues](https://github.com/coinfantasy365/hedera-sdk/issues)
 - 💬 **Discussions:** [GitHub Discussions](https://github.com/coinfantasy365/hedera-sdk/discussions)
-- 🔒 **Security:** security@coinfantasy.io
+- 🔒 **Security:** security@coinfantasy.fun
 - 📦 **npm Package:** [@coinfantasy/hedera-sdk](https://www.npmjs.com/package/@coinfantasy/hedera-sdk)
-- 📚 **Documentation:** [docs.coinfantasy.io](https://docs.coinfantasy.io)
+- 📚 **Documentation:** [docs.coinfantasy.fun](https://docs.coinfantasy.fun)
 
 ## License
 

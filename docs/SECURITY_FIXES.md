@@ -386,7 +386,7 @@ All security fixes have **minimal performance impact**:
 - **Full Audit Report:** [docs/SECURITY_AUDIT.md](./SECURITY_AUDIT.md)
 - **Security Best Practices:** [SECURITY_NOTE.md](../SECURITY_NOTE.md)
 - **API Documentation:** [docs/api-reference.md](./api-reference.md)
-- **Report Issues:** security@coinfantasy.io
+- **Report Issues:** security@coinfantasy.fun
 
 ---
 

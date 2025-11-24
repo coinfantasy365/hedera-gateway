@@ -413,7 +413,7 @@ SDK_DEBUG=true npm start
 ```typescript
 const sdk = new CoinFantasyHederaSDK({
   network: 'testnet',  // or 'mainnet' - explicit is safer
-  apiBaseUrl: 'https://api.coinfantasy.io'
+  apiBaseUrl: 'https://api.coinfantasy.fun'
 });
 
 // ❌ DANGEROUS: Relying on environment variables can cause mainnet/testnet confusion
@@ -529,7 +529,7 @@ npm audit --json > audit-report.json
 If you discover a security vulnerability:
 
 1. **DO NOT** open a public GitHub issue
-2. Email: security@coinfantasy.io
+2. Email: security@coinfantasy.fun
 3. Include:
    - Description of vulnerability
    - Steps to reproduce
@@ -596,4 +596,4 @@ The SDK is **production-ready** with appropriate safeguards for typical use case
 
 **Report Generated:** October 30, 2025  
 **Next Review Scheduled:** January 30, 2026  
-**Questions:** security@coinfantasy.io
+**Questions:** security@coinfantasy.fun

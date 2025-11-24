@@ -41,8 +41,8 @@ const walletConnectAdapter = createAdapterForChoice('walletconnect', {
   projectId: 'YOUR_WALLETCONNECT_PROJECT_ID', // Get from cloud.walletconnect.com
   name: 'CoinFantasy',
   description: 'Fantasy sports powered by Hedera',
-  url: 'https://coinfantasy.io',
-  icons: ['https://coinfantasy.io/icon.png']
+  url: 'https://coinfantasy.fun',
+  icons: ['https://coinfantasy.fun/icon.png']
 });
 const wallet = new WalletManager(walletConnectAdapter);
 await wallet.init();
